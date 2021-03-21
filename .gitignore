@@ -6,3 +6,5 @@ Cargo.lock
 .cargo/credentials.toml
 .cargo/config_fast_compile
 **/trace-*.json
+*.iml
+.idea/

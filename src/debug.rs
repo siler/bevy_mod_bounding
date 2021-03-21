@@ -47,7 +47,7 @@ pub fn update_debug_meshes<T>(
                     .spawn(PbrBundle {
                         mesh: mesh_handle,
                         material: materials.add(StandardMaterial {
-                            albedo: Color::rgb(0.0, 1.0, 0.0),
+                            base_color: Color::rgb(0.0, 1.0, 0.0),
                             unlit: true,
                             ..Default::default()
                         }),
