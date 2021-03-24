@@ -96,6 +96,7 @@ pub trait BoundingVolume {
 /// Spawns a new [BoundingVolume], replacing the [AddBoundingVolume] marker component on the
 /// entity. This new BoundingVolume is fully initialized and will be kept up to date with the
 /// `update()` system.
+#[allow(clippy::type_complexity)]
 pub fn spawn<T: 'static + BoundingVolume + Send + Sync + Debug>(
     mut commands: Commands,
     meshes: Res<Assets<Mesh>>,
@@ -103,10 +104,11 @@ pub fn spawn<T: 'static + BoundingVolume + Send + Sync + Debug>(
 ) {
     for (handle, transform, entity) in query.iter() {
         if let Some(mesh) = meshes.get(handle) {
-            commands.set_current_entity(entity);
             let new_bound = T::new(mesh, transform);
-            commands.with(new_bound);
-            commands.remove::<Bounded<T>>(entity);
+            commands
+                .entity(entity)
+                .insert(new_bound)
+                .remove::<Bounded<T>>();
         }
     }
 }
@@ -130,7 +132,7 @@ fn update<T: 'static + BoundingVolume + Send + Sync>(
     }
     for entity in changed_transform_query.iter() {
         // Only process entities that haven't already been updated.
-        if let Err(_) = changed_mesh_query.get(entity) {
+        if changed_mesh_query.get(entity).is_err() {
             if let Ok((mut bounding_vol, transform, handle)) = bound_vol_query.get_mut(entity) {
                 let mesh = meshes
                     .get(handle)

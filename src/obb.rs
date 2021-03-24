@@ -73,7 +73,7 @@ impl OrientedBB {
     /// will be more conservative, and will be larger than the AABB of the mesh itself.
     pub fn outer_aabb(&self) -> AxisAlignedBB {
         let axis_aligned_vertices = self.aabb.vertices_mesh_space();
-        let oriented_vertices = axis_aligned_vertices
+        let oriented_vertices: Vec<Vec3> = axis_aligned_vertices
             .iter()
             .map(|vertex| self.orientation().mul_vec3(*vertex))
             .collect();
@@ -81,7 +81,7 @@ impl OrientedBB {
     }
     /// Given a list of mesh vertices, and the orientation of this mesh, constructs an oriented
     /// bounding box.
-    fn compute_obb(vertices: &Vec<Vec3>, orientation: Quat) -> OrientedBB {
+    fn compute_obb(vertices: &[Vec3], orientation: Quat) -> OrientedBB {
         let mut maximums = Vec3::new(f32::MIN, f32::MIN, f32::MIN);
         let mut minimums = Vec3::new(f32::MAX, f32::MAX, f32::MAX);
         let transform = Mat4::from_quat(orientation);
@@ -169,6 +169,6 @@ impl BoundingVolume for OrientedBB {
                 return false;
             }
         }
-        return true;
+        true
     }
 }
