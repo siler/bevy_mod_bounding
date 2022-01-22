@@ -1,7 +1,7 @@
 use crate::{aabb::Aabb, obb::Obb, sphere::BSphere, BoundingVolume};
 use bevy::{
     prelude::*,
-    render::{mesh::Indices, pipeline::PrimitiveTopology},
+    render::{mesh::Indices, render_resource::PrimitiveTopology},
 };
 
 /// Marks an entity that should have a mesh added as a child to represent the mesh's bounding volume.
@@ -64,8 +64,8 @@ pub fn update_debug_meshes<T>(
 #[allow(clippy::type_complexity)]
 pub fn update_debug_mesh_visibility<T>(
     mut query: QuerySet<(
-        QueryState<(&Children, &Visible), (With<DebugBounds>, With<T>, Changed<Visible>)>,
-        QueryState<&mut Visible, With<DebugBoundsMesh>>,
+        QueryState<(&Children, &Visibility), (With<DebugBounds>, With<T>, Changed<Visibility>)>,
+        QueryState<&mut Visibility, With<DebugBoundsMesh>>,
     )>,
 ) where
     T: 'static + BoundingVolume + Clone + Send + Sync + Component,

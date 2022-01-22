@@ -1,7 +1,7 @@
 use crate::BoundingVolume;
 use bevy::{
     prelude::*,
-    render::{mesh::VertexAttributeValues, pipeline::PrimitiveTopology},
+    render::{mesh::VertexAttributeValues, render_resource::PrimitiveTopology},
 };
 use core::panic;
 

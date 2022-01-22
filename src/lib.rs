@@ -3,7 +3,7 @@ pub mod debug;
 pub mod obb;
 pub mod sphere;
 
-use bevy::{prelude::*, transform::TransformSystem};
+use bevy::{prelude::*, render::view::VisibilitySystems, transform::TransformSystem};
 use debug::{update_debug_mesh_visibility, update_debug_meshes};
 use std::fmt::Debug;
 use std::marker::PhantomData;
@@ -31,23 +31,20 @@ where
             .add_system_to_stage(
                 CoreStage::PostUpdate,
                 update::<T>
-                    .system()
                     .after(TransformSystem::TransformPropagate)
                     .label(BoundingSystem::UpdateBounds),
             )
             .add_system_to_stage(
                 CoreStage::PostUpdate,
                 update_debug_meshes::<T>
-                    .system()
                     .after(BoundingSystem::UpdateBounds)
                     .label(BoundingSystem::UpdateDebug),
             )
             .add_system_to_stage(
                 CoreStage::PostUpdate,
                 update_debug_mesh_visibility::<T>
-                    .system()
                     .after(BoundingSystem::UpdateDebug)
-                    .before(bevy::render::RenderSystem::VisibleEntities),
+                    .before(VisibilitySystems::CheckVisibility),
             );
     }
 }
