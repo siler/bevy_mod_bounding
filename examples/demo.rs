@@ -8,8 +8,8 @@ fn main() {
         .add_plugin(BoundingVolumePlugin::<sphere::BSphere>::default())
         .add_plugin(BoundingVolumePlugin::<aabb::Aabb>::default())
         .add_plugin(BoundingVolumePlugin::<obb::Obb>::default())
-        .add_startup_system(setup.system())
-        .add_system(rotation_system.system())
+        .add_startup_system(setup)
+        .add_system(rotation_system)
         .run();
 }
 

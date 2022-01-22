@@ -27,7 +27,7 @@ where
     Mesh: From<&'static T>,
 {
     fn build(&self, app: &mut App) {
-        app.add_system_to_stage(CoreStage::PreUpdate, spawn::<T>.system())
+        app.add_system_to_stage(CoreStage::PreUpdate, spawn::<T>)
             .add_system_to_stage(
                 CoreStage::PostUpdate,
                 update::<T>
